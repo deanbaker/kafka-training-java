@@ -80,6 +80,8 @@ public class StreamingTopology {
         totalStream.to("customer-total-topic", stringLongProduced);
 
         KStream<Windowed<String>, Long> windowedLongKStream = computeRunningTotal(stream);
+        windowedLongKStream.selectKey((key, value) -> key.toString()).to("customer-rolling-total-topic", stringLongProduced);
+
         KStream<String, Transaction> enhancedTransactions = categorisedStream(stream, createCategoryLookupTable(builder));
     }
 
