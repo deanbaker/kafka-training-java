@@ -175,7 +175,13 @@ To see a working version of the producer you can checkout the branch called `tot
 
 ## Calculating Windowed totals
 
-Next steps..
+Ok, so now we have a rolling total for a customer from the start of time, how cool would it be to create a rolling total? We 
+would be able to calculate spend over a 30 day period. Again we are going to use the API documentation that you can find here:https://docs.confluent.io/current/streams/developer-guide/dsl-api.html#streams-developer-guide-dsl-windowing
+
+Open up `StreamingTopologyTest` and lets work through it - we will want the tests called `testRollingTotalInSameWindow` and `testRollingTotalInDifferentWindow`
+go green!
+
+To see a working version of the producer you can checkout the branch called `rolling-totals-complete`.
 
 ## Kafka Connect Sink!
 
