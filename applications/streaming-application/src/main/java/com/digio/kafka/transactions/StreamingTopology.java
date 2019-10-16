@@ -81,6 +81,8 @@ public class StreamingTopology {
 
         KStream<String, Transaction> stream = createStream(builder);
         KStream<String, Long> totalStream = computeTotals(stream);
+        totalStream.to("customer-total-topic");
+
         KStream<Windowed<String>, Long> windowedLongKStream = computeRunningTotal(stream);
         KStream<String, Transaction> enhancedTransactions = categorisedStream(stream, createCategoryLookupTable(builder));
         enhancedTransactions
