@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class StreamingTopology {
 
@@ -48,7 +49,17 @@ public class StreamingTopology {
 
     public static KStream<Windowed<String>, Long> computeRunningTotal(KStream<String, Transaction> kStream) {
 
-        return null;
+        long windowSizeMs = TimeUnit.SECONDS.toMillis(30);
+        TimeWindows weeklySpendWindow = TimeWindows.of(windowSizeMs);
+
+        return kStream
+                .groupByKey()
+                .windowedBy(weeklySpendWindow)
+                .aggregate(
+                        () -> 0L,
+                        (key, value, aggregate) -> aggregate + value.getAmount(),
+                        Materialized.with(new Serdes.StringSerde(), new Serdes.LongSerde()))
+                .toStream();
     }
 
     public static GlobalKTable<String, String> createCategoryLookupTable(StreamsBuilder builder) {

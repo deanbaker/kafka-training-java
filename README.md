@@ -183,6 +183,49 @@ go green!
 
 To see a working version of the producer you can checkout the branch called `rolling-totals-complete`.
 
+## Enhanced transactions
+
+We are now going to play with Global KTables, and merging the streams. Essentially what we want to do here is for each
+transaction we see, perform a lookup on its `category` code and replace it with the associated value found in the categories topic.
+
+A picture would help a lot right now.
+
+### Seeding the categories
+
+There are one of two ways we can get data into the category topic:
+1. Produce directly to the topic
+2. Use Kafka Connect to keep it in sync with an external datastore.
+
+#### Produce directly:
+
+We can use a console producer to make this happen so in our kafka tools docker terminal we can paste:
+```shell script
+./bin/kafka-console-producer.sh --broker-list kafka-1:19092 --topic category-topic --property "parse.key=true" --property "key.separator=:"
+CG01:Rent
+CG02:Food
+CG03:Beers
+CG04:Whisky
+
+```
+
+Hit `control-c` to exit.
+
+We can now see what categories are present:
+```shell script
+./bin/kafka-console-consumer.sh --bootstrap-server kafka-1:19092 \
+             --topic category-topic \
+             --from-beginning \
+             --formatter kafka.tools.DefaultMessageFormatter \
+             --property print.key=true \
+             --property print.value=true
+```
+
+#### Kafka connect:
+
+TBD.
+
+To see a working version of the producer you can checkout the branch called `enhanced-transactions-complete`.
+
 ## Kafka Connect Sink!
 
 Next steps
