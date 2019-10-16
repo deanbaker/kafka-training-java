@@ -1,5 +1,6 @@
 package com.digio.kafka.transactions;
 
+import com.digio.kafka.transactions.serdes.MessageTimeExtractor;
 import com.digio.kafka.transactions.serdes.TransactionSerde;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
@@ -7,10 +8,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
-import org.apache.kafka.streams.kstream.GlobalKTable;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.Produced;
-import org.apache.kafka.streams.kstream.Windowed;
+import org.apache.kafka.streams.kstream.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,12 +32,18 @@ public class StreamingTopology {
 
     public static KStream<String, Transaction> createStream(StreamsBuilder builder) {
 
-        return null;
+        return builder.stream("transaction-topic", Consumed.with(new Serdes.StringSerde(), new TransactionSerde())
+                .withTimestampExtractor(new MessageTimeExtractor()));
     }
 
     public static KStream<String, Long> computeTotals(KStream<String, Transaction> kstream) {
 
-        return null;
+        return kstream.groupByKey()
+                .aggregate(
+                        () -> 0L,
+                        (key, value, aggregate) -> aggregate + value.getAmount(),
+                        Materialized.with(new Serdes.StringSerde(), new Serdes.LongSerde()))
+                .toStream();
     }
 
     public static KStream<Windowed<String>, Long> computeRunningTotal(KStream<String, Transaction> kStream) {

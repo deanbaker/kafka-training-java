@@ -158,7 +158,25 @@ We can see any new data appear on the topic by creating a Console Producer from 
 
 To see a working version of the producer you can checkout the branch called `producer-complete`.
 
+
+## Calculating totals
+
+We will now attempt to calculate the running total for all of our customers! To do this we will start to touch the 
+`StreamingTopology` class found under `applications/streaming-application`. Lucky for us we have some excellent tests that will
+make this transition easy :)
+
+Open up `StreamingTopologyTest` and lets work through it - we want to make the test called `testTotal` go green!
+You will want to have a decent handle on Java's lambda and streaming syntax, and have a look at the confluent documentation
+around the streaming APIs: https://docs.confluent.io/current/streams/developer-guide/dsl-api.html
+
+You should also notice that we are making use of the `TopologyTestDriver`, you can read more about that here: https://docs.confluent.io/current/streams/developer-guide/test-streams.html
+ 
+To see a working version of the producer you can checkout the branch called `totals-complete`.
+
+## Calculating Windowed totals
+
+Next steps..
+
 ## Kafka Connect Sink!
 
 Next steps
-
