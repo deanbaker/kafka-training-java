@@ -228,4 +228,4 @@ To see a working version of the producer you can checkout the branch called `enh
 
 ## Kafka Connect Sink!
 
-Next steps
+Great - now that we have some enhanced 
