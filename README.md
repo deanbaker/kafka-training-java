@@ -228,4 +228,34 @@ To see a working version of the producer you can checkout the branch called `enh
 
 ## Kafka Connect Sink!
 
-Great - now that we have some enhanced 
+Great - now that we have some enhanced data in a topic, wouldn't it be great if we could push it out somewhere for an API
+to play with? For this we can do things a few different ways:
+1. Create a consumer for the `enhanced-transactions-topic` and write messages out to a datastore
+2. Use Kafka connect to essentially do the same thing (but without code!)
+3. Use KSQL to query data directly from a topic
+
+For the purposes of this tutorial we will go with option 2 so we can play around a little with connect.
+
+If you navigate to your control center at http://localhost:9021 we can have a look at the Connect cluster.
+You will notice that there are a bunch out of the box that we can use (we had to actually install the Mongo connector, I'll go through that process), and
+we can go ahead and look at the connector defined `docker/connect/enhanced-transaction-sink.json`.
+
+To install the connector we can use the API provided to us by the Kafka Connect cluster at `localhost:8083` 
+
+```shell script
+curl -X POST -H "Content-Type: application/json" -d @enhanced-transactions-sink.json localhost:8083/connectors
+```
+
+We can now list our connectors using REST, or we can use the console to see its health.
+```shell script
+curl localhost:8083/connectors
+```
+
+### Viewing the data
+
+You will remember that we had also installed a MongoClient in our docker setup - to see our data we can log into the web console
+here http://localhost:3000 and connect to `mongo` host (remember we are in the docker network at this point)
+
+![](./documentation/mongo-setup.png)
+
+From here we should be able to view what is going into the `EnhancedTransactions` connection

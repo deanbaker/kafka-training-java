@@ -1,0 +1,19 @@
+{
+  "config" : {
+    "name" : "MongoSinkConnector",
+    "topics" : "enhanced-transaction-topic",
+    "tasks.max" : "1",
+    "value.converter.schemas.enable" : "false",
+    "key.converter.schemas.enable" : "false",
+    "key.converter" : "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter" : "org.apache.kafka.connect.json.JsonConverter",
+    "connector.class" : "com.mongodb.kafka.connect.MongoSinkConnector",
+    "connection.uri" : "mongodb://mongo/test?retryWrites=true",
+    "collection" : "EnhancedTransactions",
+    "database" : "test",
+    "transforms.WrapKey.field" : "_id",
+    "transforms" : "WrapKey",
+    "transforms.WrapKey.type" : "org.apache.kafka.connect.transforms.HoistField$Key"
+  },
+  "name" : "MongoSinkConnector"
+}

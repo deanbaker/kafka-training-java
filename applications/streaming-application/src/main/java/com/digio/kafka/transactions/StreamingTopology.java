@@ -83,6 +83,9 @@ public class StreamingTopology {
         KStream<String, Long> totalStream = computeTotals(stream);
         KStream<Windowed<String>, Long> windowedLongKStream = computeRunningTotal(stream);
         KStream<String, Transaction> enhancedTransactions = categorisedStream(stream, createCategoryLookupTable(builder));
+        enhancedTransactions
+                .peek((key, value) -> logger.info(value.toString()))
+                .to("enhanced-transaction-topic", Produced.with(new Serdes.StringSerde(), new TransactionSerde()));
     }
 
     public static void main(String[] args) {
