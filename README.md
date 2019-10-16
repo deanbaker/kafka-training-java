@@ -200,7 +200,7 @@ There are one of two ways we can get data into the category topic:
 
 We can use a console producer to make this happen so in our kafka tools docker terminal we can paste:
 ```shell script
-./bin/kafka-console-producer.sh --broker-list kafka-1:19092 --topic category-topic --property "parse.key=true" --property "key.separator=:"
+./bin/kafka-console-producer.sh --broker-list broker:29092 --topic category-topic --property "parse.key=true" --property "key.separator=:"
 CG01:Rent
 CG02:Food
 CG03:Beers
@@ -212,7 +212,7 @@ Hit `control-c` to exit.
 
 We can now see what categories are present:
 ```shell script
-./bin/kafka-console-consumer.sh --bootstrap-server kafka-1:19092 \
+./bin/kafka-console-consumer.sh --bootstrap-server broker:29092 \
              --topic category-topic \
              --from-beginning \
              --formatter kafka.tools.DefaultMessageFormatter \
