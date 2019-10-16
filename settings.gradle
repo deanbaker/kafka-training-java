@@ -1,0 +1,6 @@
+rootProject.name = 'kafka-training-java'
+
+include 'applications/producer-application'
+include 'applications/streaming-application'
+include 'components/domain'
+include 'components/kafka'
